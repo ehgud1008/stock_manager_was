@@ -52,6 +52,23 @@ ojdbc.properties
 *.gz
 *.sha256
 *.md
+*.args
+*.pid
+*.py
+*.jsonl
+*.example
+*.cmd
+mvnw
+*.ps1
+*.mjs
+*.jsx
+*.xlsx
+*.pdf
+*.csv
+*.js
+*.png
+*.properties
+
 
 # OS metadata
 .DS_Store
