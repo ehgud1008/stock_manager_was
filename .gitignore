@@ -1,0 +1,59 @@
+# Build output (keep the Maven wrapper required to build the project)
+target/
+**/target/
+*.jar
+!.mvn/wrapper/maven-wrapper.jar
+
+# Local editor settings
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/
+
+# Environment files and private configuration
+.env
+.env.*
+*.env
+!.env.example
+application-local.yml
+application-local.yaml
+application-local.properties
+application-secret.yml
+application-local-secret.yml
+application-*-secret.yml
+application-secret.yaml
+application-*-secret.yaml
+application-secret.properties
+application-*-secret.properties
+
+# Oracle Wallet and private key material
+[Ww]allet*/
+[Ww]allet*.zip
+cwallet.sso
+ewallet.*
+tnsnames.ora
+sqlnet.ora
+ojdbc.properties
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.key
+*.pem
+
+*.sql
+*.json
+*.gz
+*.sha256
+
+# OS metadata
+.DS_Store
+Thumbs.db
+Desktop.ini
+/data/swing-market/

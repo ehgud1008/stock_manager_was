@@ -1,0 +1,156 @@
+storage:
+  snapshots:
+    deduplication-enabled: ${SNAPSHOT_DEDUPLICATION_ENABLED:true}
+    legacy-migration-enabled: ${SNAPSHOT_LEGACY_MIGRATION_ENABLED:false}
+    legacy-batch-size: ${SNAPSHOT_LEGACY_BATCH_SIZE:25}
+    archive-enabled: ${SNAPSHOT_ARCHIVE_ENABLED:false}
+    archive-directory: ${SNAPSHOT_ARCHIVE_DIRECTORY:/home/ubuntu/stock_v2/stock-archive}
+    hot-trading-days: ${SNAPSHOT_HOT_TRADING_DAYS:90}
+    archive-batch-size: ${SNAPSHOT_ARCHIVE_BATCH_SIZE:500}
+    archive-cron: ${SNAPSHOT_ARCHIVE_CRON:0 */5 3-6 * * *}
+    monitoring-enabled: ${SNAPSHOT_MONITORING_ENABLED:true}
+    monitor-cron: ${SNAPSHOT_MONITOR_CRON:0 0 * * * *}
+    alerts-enabled: ${SNAPSHOT_ALERTS_ENABLED:true}
+    capacity-bytes: ${SNAPSHOT_CAPACITY_BYTES:0}
+    warning-percent: ${SNAPSHOT_WARNING_PERCENT:80}
+    critical-percent: ${SNAPSHOT_CRITICAL_PERCENT:90}
+    warning-days: ${SNAPSHOT_WARNING_DAYS:14}
+
+news-insights:
+  naver-client-id: ${NEWS_NAVER_CLIENT_ID:}
+  naver-client-secret: ${NEWS_NAVER_CLIENT_SECRET:}
+  dart-api-key: ${NEWS_DART_API_KEY:}
+
+spring:
+  application:
+    name: stock-analysis
+  jackson:
+    time-zone: Asia/Seoul
+
+# Apply 12_trade_decision.sql before enabling. Single trusted owner; no account auto-trading.
+trade-decision:
+  enabled: ${TRADE_DECISION_ENABLED:true}
+  owner-scope: ${TRADE_DECISION_OWNER_SCOPE:local-owner}
+  model: ${TRADE_DECISION_MODEL:gemini-3.8-flash}
+  daily-requests: ${TRADE_DECISION_DAILY_REQUESTS:100}
+  daily-ai-calls: ${TRADE_DECISION_DAILY_AI_CALLS:30}
+  daily-token-budget: ${TRADE_DECISION_DAILY_TOKEN_BUDGET:300000}
+  max-input-bytes: ${TRADE_DECISION_MAX_INPUT_BYTES:128000}
+  max-output-tokens: ${TRADE_DECISION_MAX_OUTPUT_TOKENS:12000}
+  thinking-level: ${TRADE_DECISION_THINKING_LEVEL:LOW}
+# Keep this WAS running overnight. Enable scheduling on only one instance per shared DB.
+screener:
+  swing-schedule:
+    enabled: ${SCREENER_SWING_SCHEDULE_ENABLED:false}
+    start-time: ${SCREENER_SWING_SCHEDULE_START_TIME:04:00}
+    latest-start-time: ${SCREENER_SWING_SCHEDULE_LATEST_START_TIME:08:00}
+    excluded-dates: ${SCREENER_SWING_SCHEDULE_EXCLUDED_DATES:}
+
+unified:
+  portfolio:
+    enabled: ${UNIFIED_PORTFOLIO_ENABLED:false}
+    operations-enabled: ${UNIFIED_OPERATIONS_ENABLED:true}
+    test-delivery-enabled: ${UNIFIED_TELEGRAM_TEST_ENABLED:true}
+  performance:
+    enabled: ${UNIFIED_PERFORMANCE_ENABLED:false}
+    round-trip-fee-bps: ${UNIFIED_PERFORMANCE_ROUND_TRIP_FEE_BPS:30}
+    slippage-bps: ${UNIFIED_PERFORMANCE_SLIPPAGE_BPS:5}
+    neutral-band-percent: ${UNIFIED_PERFORMANCE_NEUTRAL_BAND_PERCENT:0.3}
+  report:
+    enabled: ${UNIFIED_REPORT_ENABLED:true}
+    minimum-daily-amount-million: ${UNIFIED_REPORT_MINIMUM_DAILY_AMOUNT_MILLION:3000}
+    minimum-average-amount-million: ${UNIFIED_REPORT_MINIMUM_AVERAGE_AMOUNT_MILLION:1500}
+    minimum-net-reward-risk: ${UNIFIED_REPORT_MINIMUM_NET_REWARD_RISK:1.5}
+    round-trip-cost-bps: ${UNIFIED_REPORT_ROUND_TRIP_COST_BPS:40}
+    maximum-ema20-distance: ${UNIFIED_REPORT_MAXIMUM_EMA20_DISTANCE:10}
+    maximum-candidates: ${UNIFIED_REPORT_MAXIMUM_CANDIDATES:20}
+  telegram:
+    enabled: ${UNIFIED_TELEGRAM_ENABLED:true}
+    bot-token: ${UNIFIED_TELEGRAM_BOT_TOKEN:}
+    chat-id: ${UNIFIED_TELEGRAM_CHAT_ID:}
+    public-base-url: ${UNIFIED_REPORT_PUBLIC_BASE_URL:}
+  analysis-schedule:
+    enabled: ${UNIFIED_ANALYSIS_SCHEDULE_ENABLED:true}
+    cron: ${UNIFIED_ANALYSIS_SCHEDULE_CRON:0 0 20 * * MON-FRI}
+  eod:
+    worker-enabled: ${UNIFIED_EOD_WORKER_ENABLED:true}
+    calendar: ${UNIFIED_EOD_CALENDAR:classpath:unified-calendar-2026.csv}
+    catchup-window: ${UNIFIED_EOD_CATCHUP_WINDOW:PT8H}
+    settlement-delay: ${UNIFIED_EOD_SETTLEMENT_DELAY:PT10M}
+    stability-interval: ${UNIFIED_EOD_STABILITY_INTERVAL:PT30S}
+    readiness-timeout: ${UNIFIED_EOD_READINESS_TIMEOUT:PT90M}
+    run-timeout: ${UNIFIED_EOD_RUN_TIMEOUT:PT12H}
+    retry-delay: ${UNIFIED_EOD_RETRY_DELAY:PT1M}
+    max-attempts: ${UNIFIED_EOD_MAX_ATTEMPTS:3}
+    lease-duration: ${UNIFIED_EOD_LEASE_DURATION:PT2M}
+
+server:
+  port: ${SERVER_PORT:38080}
+
+springdoc:
+  api-docs:
+    enabled: ${API_DOCS_ENABLED:true}
+  swagger-ui:
+    enabled: ${API_DOCS_ENABLED:true}
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+    doc-expansion: none
+    disable-swagger-default-url: true
+  paths-to-match: /api/v1/**
+  # Nested DTOs such as Request, Run and View must have distinct schema names.
+  use-fqn: true
+  # BusinessException chooses its HTTP status at runtime; document errors explicitly.
+  override-with-generic-response: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when_authorized
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: ${spring.application.name}
+    description: Korean stock management and analysis backend
+
+app:
+  cors:
+    allowed-origins: ${APP_CORS_ALLOWED_ORIGINS:http://localhost:5173}
+  openai:
+    api-key: ${OPENAI_API_KEY:}
+  gemini:
+    api-key: ${GEMINI_API_KEY:}
+
+swing:
+  backtest:
+    market-dir: ${SWING_MARKET_DATA_DIR:./data/swing-market}
+    paper-enabled: ${SWING_BACKTEST_PAPER_ENABLED:false}
+
+broker-account:
+  access-key: ${BROKER_ACCOUNT_ACCESS_KEY:}
+
+kiwoom:
+  base-url: ${KIWOOM_BASE_URL:https://api.kiwoom.com}
+  mock-base-url: ${KIWOOM_MOCK_BASE_URL:https://mockapi.kiwoom.com}
+  use-mock: ${KIWOOM_USE_MOCK:true}
+  app-key: ${KIWOOM_APP_KEY:}
+  secret-key: ${KIWOOM_SECRET_KEY:}
+  mock-app-key: ${KIWOOM_MOCK_APP_KEY:}
+  mock-secret-key: ${KIWOOM_MOCK_SECRET_KEY:}
+  grant-type: client_credentials
+  connect-timeout: ${KIWOOM_CONNECT_TIMEOUT:3s}
+  read-timeout: ${KIWOOM_READ_TIMEOUT:10s}
+  token-refresh-margin: ${KIWOOM_TOKEN_REFRESH_MARGIN:60s}
+
+mybatis:
+  mapper-locations: classpath:/mapper/**/*.xml
+  type-aliases-package: com.example.stockanalysis
+  configuration:
+    map-underscore-to-camel-case: true
