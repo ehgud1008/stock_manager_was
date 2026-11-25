@@ -1,0 +1,43 @@
+tomcat:
+  basedir: /home/ubuntu/tomcat
+  accesslog:
+    enabled: true
+    directory: logs
+    prefix: access
+    suffix: .log
+    pattern: '%a %t "%m %U %H" %s %b %D host="%{Host}i" ua="%{User-Agent}i"'
+
+screener:
+  swing-schedule:
+    enabled: false
+
+unified:
+  analysis-schedule:
+    enabled: ${UNIFIED_ANALYSIS_SCHEDULE_ENABLED:true}
+    cron: ${UNIFIED_ANALYSIS_SCHEDULE_CRON:0 0 20 * * MON-FRI}
+
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: oracle.jdbc.OracleDriver
+
+management:
+  endpoint:
+    health:
+      show-details: when_authorized
+
+logging:
+  level:
+    com.example.stockanalysis: INFO
+
+kiwoom:
+  grant-type: client_credentials
+  app-key: ${KIWOOM_APP_KEY}
+  secret-key: ${KIWOOM_SECRET_KEY}
+  base-url: ${KIWOOM_BASE_URL:https://api.kiwoom.com}
+  use-mock: ${KIWOOM_USE_MOCK:false}
+  mock-base-url: ${KIWOOM_MOCK_BASE_URL:https://mockapi.kiwoom.com}
+  mock-app-key: ${KIWOOM_MOCK_APP_KEY:}
+  mock-secret-key: ${KIWOOM_MOCK_SECRET_KEY:}

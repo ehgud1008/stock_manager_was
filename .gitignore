@@ -51,6 +51,7 @@ ojdbc.properties
 *.json
 *.gz
 *.sha256
+*.md
 
 # OS metadata
 .DS_Store
